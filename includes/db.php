@@ -77,4 +77,22 @@ class db
         echo "Post uploaded";
     }
 
+    public function edit($title, $post, $image, $id) {
+        $sql = "UPDATE posts SET title = :title, post = :post, image = :image 
+        where id = :id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['title' => $title, 'post' => $post, 'image' => $image, 'id' => $id]);
+    }
+
+    function getPostById($id) {
+        $sql = "SELECT * FROM posts WHERE id=$id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        $post = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		return $post;
+
+		// returns user in an array format: 
+		// ['id'=>1 'username' => 'Awa', 'email'=>'a@a.com', 'password'=> 'mypass']
+    }
+
 }
