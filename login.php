@@ -35,6 +35,7 @@ if (isset($_POST['name']) && isset($_POST['password'])) {
 					<nav id="nav">
 						<a href="index.php">Home</a>
 						<a href="login.php">Login</a>
+						<a href="editor.php">Editor</a>
 					</nav>
 					<a href="#navPanel" class="navPanelToggle"><span class="fa fa-bars"></span></a>
 				</div>

@@ -1,4 +1,11 @@
 <?php
+
+session_start();
+
+if (isset( $_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+	echo "You are logged in";
+}
+
 require_once('includes\db.php'); 
 $db = new db();
 $posts = $db->getAllPosts();
@@ -36,7 +43,9 @@ $limitedPosts = $db->limitTheResults($thisPageFirstResult, $db->resultsPerPage);
 				<div class="inner">
 					<nav id="nav">
 						<a href="index.php">Home</a>
-						<a href="login.php">Login</a>
+                        <a href="login.php">Login</a>
+                        <a href="editor.php">Editor</a>
+                        <a href="logout.php">Logout</a>
 					</nav>
 					<a href="#navPanel" class="navPanelToggle"><span class="fa fa-bars"></span></a>
 				</div>
@@ -56,7 +65,8 @@ $limitedPosts = $db->limitTheResults($thisPageFirstResult, $db->resultsPerPage);
 						<article>
 							<header>
 								<h3><?php echo $i['title'] ?></h3>
-							</header>
+                            </header>
+                            <p><?php echo '<img height="150" width="150" src="data:image;base64,'. $i['image'] .' "> ' ?></p>
 							<p><?php echo $i['posted_at'] ?></p>
 							<footer>
 								<a href="#" class="button special">More</a>

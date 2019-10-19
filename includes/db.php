@@ -70,4 +70,11 @@ class db
         return $limitedPosts;
     }
 
+    function insert($title, $post, $image) {
+        $sql = "INSERT INTO posts (title, post, image) VALUES (:title, :post, :image)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['title' => $title, 'post' => $post, 'image' => $image]);
+        echo "Post uploaded";
+    }
+
 }
