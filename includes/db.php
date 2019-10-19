@@ -95,4 +95,12 @@ class db
 		// ['id'=>1 'username' => 'Awa', 'email'=>'a@a.com', 'password'=> 'mypass']
     }
 
+    public function findPosts($title) {
+        $sql = "SELECT * FROM posts WHERE title LIKE :title";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['title' => '%' .  $title . '%']);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $data;
+    }
+
 }

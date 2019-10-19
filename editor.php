@@ -4,8 +4,10 @@ session_start();
 if (!isset( $_SESSION['loggedin']) && $_SESSION['loggedin'] == false) {
 	header("location: login.php");
 }
+require_once('includes\db.php'); 
 
-
+$db = new db();
+$data = $db->getAllPosts();
 ?>
 
 
@@ -20,6 +22,8 @@ if (!isset( $_SESSION['loggedin']) && $_SESSION['loggedin'] == false) {
 		<link rel="stylesheet" href="assets/css/main.css" />
 	</head>
 	<body class="subpage">
+	<script src="main.js"></script>
+
 
 		<!-- Header -->
 			<header id="header">
@@ -67,7 +71,30 @@ if (!isset( $_SESSION['loggedin']) && $_SESSION['loggedin'] == false) {
 						</div>
 						<div class="6u$ 12u$(small)">
 							<h3>Find a post</h3>
-							<p></p>
+							<p>
+							<form method="POST">
+								<input type="text" name="name" placeholder="Search Posts" onkeyup="searchPosts(this.value)">
+							</form>    
+							<div class="data-wrapper">
+								<table>
+									<thead>
+										<tr>
+											<th>Id</th>
+											<th>Title</th>
+										</tr>
+									</thead>
+									<tbody class="data-table">
+										<?php foreach($data as $i) { ?>
+										<tr>
+											<td><?php echo $i['id'] ?></td>
+											<td><?php echo $i['title'] ?></td>
+											<td><?php echo $i['post'] ?></td>
+										<tr>
+										<?php } ?>
+									</tbody>
+								</table>
+							</div>
+							</p>
 						</div>
 						<!-- Break -->
 						<div class="4u 12u$(medium)">
@@ -95,5 +122,7 @@ if (!isset( $_SESSION['loggedin']) && $_SESSION['loggedin'] == false) {
 					</div>
 				</div>
 			</footer>
+
+
 	</body>
 </html>
