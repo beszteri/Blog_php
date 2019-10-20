@@ -21,13 +21,14 @@ if(!isset($_GET['page'])) {
 $thisPageFirstResult = ($page - 1) * $db->resultsPerPage;
 
 //limitált találatok az adatbázisból
-$limitedPosts = $db->limitTheResults($thisPageFirstResult, $db->resultsPerPage);
+if (isset($_GET['findPost'])) {
+    $limitedPosts = $db->findPosts($_GET['findPost']);
+} else {
+	$limitedPosts = $db->limitTheResults($thisPageFirstResult, $db->resultsPerPage);
+}
 ?>
 
-
 <!DOCTYPE HTML>
-
-
 <html>
 	<head>
 		<title>Szállás.hu Blog</title>
@@ -36,8 +37,6 @@ $limitedPosts = $db->limitTheResults($thisPageFirstResult, $db->resultsPerPage);
 		<link rel="stylesheet" href="assets/css/main.css" />
 	</head>
 	<body>
-        
-      
 		<!-- Header -->
 			<header id="header">
 				<div class="inner">
@@ -56,7 +55,13 @@ $limitedPosts = $db->limitTheResults($thisPageFirstResult, $db->resultsPerPage);
 				<h1>Szállás.hu Blog</h1>
 				<p>Built with PHP</p>
 			</section>
-
+			<br>
+				<p><form method="GET" >
+					<!-- a keresési mezőben marad a keresett szöveg részlet -->
+					<input type="text" class="searchBar" style="width: 300px;float: right" name="findPost" placeholder="Search Posts"
+					value="<?php if(isset($_GET['findPost'])) echo $_GET['findPost'] ?>">
+					<input type="submit" value="Search" class="special" style="float: right">
+				</form></p>
 		<!-- One -->
 			<section id="one" class="wrapper">
 				<div class="inner">

@@ -5,3 +5,5 @@
 // $data = $db->findPosts($name);
 // echo json_encode($data);
 
+//TODO
+//lice search funkció befejezése
