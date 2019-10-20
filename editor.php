@@ -1,13 +1,18 @@
 <?php
 session_start();
 
+//session vizsgálata
 if (!isset( $_SESSION['loggedin']) && $_SESSION['loggedin'] == false) {
 	header("location: login.php");
 }
 require_once('includes\db.php'); 
 
+//ha nincs keresve, akkor üres tömböt ad
 $db = new db();
-$data = $db->getAllPosts();
+$data = [];
+if (isset($_GET['findPost'])) {
+    $data = $db->findPosts($_GET['findPost']);
+} 
 ?>
 
 
@@ -42,8 +47,8 @@ $data = $db->getAllPosts();
 			<section id="main" class="wrapper">
 				<div class="inner">
 					<header class="align-center">
-						<h2>Elements</h2>
-						<p>Aliquam erat volutpat nam dui </p>
+						<h2>CRUD page</h2>
+						<p>Here you can find, update, create and delete posts</p>
 					</header>
 
 				<!-- Content -->
@@ -72,8 +77,11 @@ $data = $db->getAllPosts();
 						<div class="6u$ 12u$(small)">
 							<h3>Find a post</h3>
 							<p>
-							<form method="POST">
-								<input type="text" name="name" placeholder="Search Posts" onkeyup="searchPosts(this.value)">
+							<form method="GET">
+								<!-- a keresési mezőben marad a keresett szöveg részlet -->
+								<input type="text" name="findPost" placeholder="Search Posts"
+								value="<?php if(isset($_GET['findPost'])) echo $_GET['findPost'] ?>">
+								<input type="submit" value="Search" class="special">
 							</form>    
 							<div class="data-wrapper">
 								<table>
@@ -81,9 +89,11 @@ $data = $db->getAllPosts();
 										<tr>
 											<th>Id</th>
 											<th>Title</th>
+											<th>Post</th>
 										</tr>
 									</thead>
 									<tbody class="data-table">
+									<!-- megjeleníti egy táblázatban a keresett posztokat -->
 										<?php foreach($data as $i) { ?>
 										<tr>
 											<td><?php echo $i['id'] ?></td>
@@ -97,17 +107,13 @@ $data = $db->getAllPosts();
 							</p>
 						</div>
 						<!-- Break -->
-						<div class="4u 12u$(medium)">
-							<h3>Interdum sapien gravida</h3>
-							<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus ornare mi ut ante amet placerat aliquet. Volutpat eu sed ante lacinia sapien lorem accumsan varius montes viverra nibh in adipiscing blandit tempus accumsan.</p>
-						</div>
-						<div class="4u 12u$(medium)">
-							<h3>Faucibus consequat lorem</h3>
-							<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus ornare mi ut ante amet placerat aliquet. Volutpat eu sed ante lacinia sapien lorem accumsan varius montes viverra nibh in adipiscing blandit tempus accumsan.</p>
-						</div>
-						<div class="4u$ 12u$(medium)">
-							<h3>Accumsan montes viverra</h3>
-							<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus ornare mi ut ante amet placerat aliquet. Volutpat eu sed ante lacinia sapien lorem accumsan varius montes viverra nibh in adipiscing blandit tempus accumsan.</p>
+						<div class="6u$ 12u$(small)">
+							<h3>Delete Post</h3>
+							<p>
+								<form action="delete.php" method="POST">
+								<input type="number" placeholder="Post id" name="id">
+								<input type="submit" value="Delete" name="deletePost" class="special">
+							</p>
 						</div>
 					</div>
 				</div>

@@ -39,7 +39,7 @@ class db
 		return user;
 
 		// returns user in an array format: 
-		// ['id'=>1 'username' => 'Awa', 'email'=>'a@a.com', 'password'=> 'mypass']
+		// ['id'=>1 'username' => 'asd', 'email'=>'a@a.com', 'password'=> 'mypass']
     }
     
     function getAllPosts() {
@@ -74,7 +74,6 @@ class db
         $sql = "INSERT INTO posts (title, post, image) VALUES (:title, :post, :image)";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute(['title' => $title, 'post' => $post, 'image' => $image]);
-        echo "Post uploaded";
     }
 
     public function edit($title, $post, $image, $id) {
@@ -91,16 +90,23 @@ class db
         $post = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		return $post;
 
-		// returns user in an array format: 
-		// ['id'=>1 'username' => 'Awa', 'email'=>'a@a.com', 'password'=> 'mypass']
+		// visszaad egy poszt tömböt: 
+		// ['id'=>1 'title' => 'asd', 'post'=>'aaaaaaa', stb]
     }
 
     public function findPosts($title) {
-        $sql = "SELECT * FROM posts WHERE title LIKE :title";
+        $sql = "SELECT * FROM posts WHERE title LIKE :title OR
+        post like :title";
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute(['title' => '%' .  $title . '%']);
+        $stmt->execute(['title' => '%' .  $title . '%', 
+        'post' => '%' . $title . '%']);
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $data;
     }
 
+    function deletePost($id) {
+        $sql = "DELETE FROM posts WHERE id = :id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['id' => $id]);
+    }
 }

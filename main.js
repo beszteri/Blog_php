@@ -1,4 +1,4 @@
-function searchPosts(name) {
+/* function searchPosts(name) {
     fetch('findPosts.php', {
         method: 'POST',
         body: new URLSearchParams('name=' + name)
@@ -28,4 +28,4 @@ function populateTable(data){
         newId.innerHTML = data[i]["name"];
         trDataContainer.appendChild(newName);
     }
-}
+} */
