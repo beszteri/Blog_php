@@ -2,15 +2,23 @@
 
 session_start();
 
-$name = "lajka89";
-$password = "123";
+// $name = "lajka89";
+// $password = "123";
 
 if (isset( $_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
 	header("location: editor.php");
 }
+require_once('includes\db.php'); 
+
+
+$db = new db();
 
 if (isset($_POST['name']) && isset($_POST['password'])) {
-	if ($_POST['name'] == $name && $_POST['password'] == $password) {
+	$name = $_POST['name'];
+	$password = $_POST['password'];
+	$user = $db -> searchUser($name);
+	//TODO tömb!
+	if ($name == $user[0]['name'] && $password == $user[0]['password']) {
 		$_SESSION['loggedin'] = true;
 		header("Location: editor.php");
 	}
@@ -22,7 +30,7 @@ if (isset($_POST['name']) && isset($_POST['password'])) {
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>Generic - Theory by TEMPLATED</title>
+		<title>Login</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="stylesheet" href="assets/css/main.css" />

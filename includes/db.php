@@ -22,8 +22,8 @@ class db
     }
     
 
-    public function searchUser($name, $password) {
-        $sql = "SELECT * FROM users WHERE name='$name' and password='$password';";
+    public function searchUser($name) {
+        $sql = "SELECT * FROM users WHERE name='$name';";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
